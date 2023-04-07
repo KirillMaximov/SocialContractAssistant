@@ -14,15 +14,6 @@ namespace SocialContractAssistant.Telegram
 {
     internal class TelegramPayment : TelegramSender
     {
-        //enum QuestionType
-        //{
-        //    simple = 1,
-        //    start = 2,
-        //    before = 3,
-        //    after = 4,
-        //    finish = 5
-        //}
-
         /// <summary>
         /// Собираем ответ для оплаты услуг;
         /// </summary>

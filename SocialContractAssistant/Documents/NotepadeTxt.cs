@@ -10,10 +10,11 @@ using Telegram.Bot;
 
 namespace SocialContractAssistant.Documents
 {
-    internal class NotepadeTxt
+    internal class NotepadeTxt : IDocuments
     {
         LogController log = new LogController();
-        public void CreateDocumentsTxt(String fileName, String documents)
+
+        public void CreateDocuments(String fileName, String documents)
         {
             try
             {
@@ -30,46 +31,8 @@ namespace SocialContractAssistant.Documents
             }
             catch (Exception exp)
             {
-                log.Error("NotepadeTxt", "CreateDocumentsTxt", exp.Message);
+                log.Error("NotepadeTxt", "CreateDocuments", exp.Message);
             }
-        }
-
-        public String CreateDocumentData(IQueryable<AnswerModel> answers)
-        {
-            var documents = String.Empty;
-            try
-            {
-                using (var db = new DataBaseContext())
-                {
-                    foreach (var item in answers)
-                    {
-                        var option = db.Options.FirstOrDefault(p => p.Id == item.OptionId);
-                        var linkDocuments = db.LinkDocuments.Where(p => p.LinkId == option!.LinkDocumentId);
-
-                        using (var dblink = new DataBaseContext())
-                        {
-                            foreach (var link in linkDocuments)
-                            {
-                                var document = dblink.Documents.FirstOrDefault(p => p.Id == link.DocumentId);
-                                if (document != null)
-                                {
-                                    documents += document.Name + Environment.NewLine;
-                                    if (!String.IsNullOrEmpty(document.Description))
-                                    {
-                                        documents += document.Description + Environment.NewLine;
-                                    }
-                                    documents += Environment.NewLine;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                log.Error("NotepadeTxt", "CreateDocumentData", exp.Message);
-            }
-            return documents;
         }
     }
 }

@@ -337,23 +337,5 @@ namespace SocialContractAssistant.Yookassa
             }
         }
         #endregion
-
-        #region ResponsPaymentWithWebApp
-        //public async Task ResponsPaymentWithWebApp(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken, SettingsModel botSettings)
-        //{
-        //    var message = new UpdateModel(update);
-
-        //    var yooPayment = YooPaymentCreate(1, "");
-
-        //    var userController = new Users.UserController();
-        //    userController.InserPayment(message.Username, yooPayment.Id, (int)PaymentType.documents);
-
-        //    await SendTextMessage(botClient, message.ChatId,
-        //        "Нажмите кнопку для оплаты",
-        //        new TelegramToolbars().CreateToolbarPayment("WithWebApp", yooPayment.Confirmation.ConfirmationUrl), cancellationToken);
-
-        //    YooPaymentThread(yooPayment.Id, botClient, message, cancellationToken, botSettings);
-        //}
-        #endregion
     }
 }

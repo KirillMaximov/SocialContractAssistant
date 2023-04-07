@@ -39,9 +39,15 @@ namespace SocialContractAssistant.Telegram
                 {
                     var document = new DocumentController();
 
-                    var fileNamePdf = $"Documents/Document_{telegramModel.message.chatId}_{DateTime.Now.ToShortDateString()}.pdf";
-                    document.CreateInPdfTest(fileNamePdf, telegramModel.message.chatId);
+                    var fileName = $"Documents/Document_{telegramModel.message.chatId}_{DateTime.Now.ToShortDateString()}";
+                    var fileNamePdf = $"{fileName}.pdf";
+                    var fileNameTxt = $"{fileName}.txt";
+
+                    document.CreateTest(new BytescountPdf(), fileNamePdf);
+                    document.CreateTest(new NotepadeTxt(), fileNameTxt);
+
                     await SendDocument(telegramModel, fileNamePdf, "Documents.pdf", String.Empty);
+                    await SendDocument(telegramModel, fileNameTxt, "Documents.txt", String.Empty);
                 }
                 catch (Exception exp)
                 {
@@ -221,15 +227,17 @@ namespace SocialContractAssistant.Telegram
                     {
                         var document = new DocumentController();
 
-                        var fileNamePdf = $"Documents/Document_{telegramModel.message.chatId}_{DateTime.Now.ToShortDateString()}.pdf";
-                        document.CreateInPdf(fileNamePdf, telegramModel.message.chatId, botSettings.ApplicationId);
-                        await SendDocument(telegramModel, fileNamePdf, "Documents.pdf", String.Empty);
+                        var fileName = $"Documents/Document_{telegramModel.message.chatId}_{DateTime.Now.ToShortDateString()}";
+                        var fileNamePdf = $"{fileName}.pdf";
+                        var fileNameTxt = $"{fileName}.txt";
 
-                        var fileNameTxt = $"Documents/Document_{telegramModel.message.chatId}_{DateTime.Now.ToShortDateString()}.txt";
-                        document.CreateInTxt(fileNameTxt, telegramModel.message.chatId, botSettings.ApplicationId);
+                        document.Create(new BytescountPdf(), fileNamePdf, telegramModel.message.chatId, botSettings.ApplicationId);
+                        document.Create(new NotepadeTxt(), fileNameTxt, telegramModel.message.chatId, botSettings.ApplicationId);
+
+                        await SendDocument(telegramModel, fileNamePdf, "Documents.pdf", String.Empty);
                         await SendDocument(telegramModel, fileNameTxt, "Documents.txt", String.Empty);
 
-                        //После получения документов делайем платеж неактивным
+                        //После получения документов делаем платеж неактивным
                         var paymentId = new UserController().GetCheckPaymentId(telegramModel.message.chatId, (int)PaymentType.documents);
                         new UserController().UpdatePayment(paymentId!, false);
                     }
